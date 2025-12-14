@@ -33,7 +33,7 @@ Basic regression:
 >>> y = np.array([0.0, 1.0, 1.5, 3.0])
 >>> reg = KNNRegressor(n_neighbors=2, weights="distance").fit(X, y)
 >>> round(reg.predict([[1.5]])[0], 4)
-np.float64(1.25)
+1.25
 """
 
 from __future__ import annotations
