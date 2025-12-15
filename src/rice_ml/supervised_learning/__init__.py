@@ -11,6 +11,5 @@ __all__ = [
     "LinearRegression",
     "LogisticRegression",
     "DecisionTreeClassifier",
-    "DecisionTreeRegressor",
 ]
 
