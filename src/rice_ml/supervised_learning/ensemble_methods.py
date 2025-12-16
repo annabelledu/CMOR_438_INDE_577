@@ -24,7 +24,9 @@ Examples
 >>> X = np.array([[0,0],[0,1],[1,0],[1,1]], dtype=float)
 >>> y = np.array([0,0,1,1])
 >>> base = KNNClassifier(n_neighbors=1)
->>> bag = BaggingClassifier(base_estimator=base, n_estimators=5, random_state=0).fit(X, y)
+>>> bag = BaggingClassifier(base_estimator=base, n_estimators=5, max_samples=1.0, random_state=0).fit(X, y)
+
+
 >>> bag.predict([[0.1, 0.1]]).tolist()
 [0]
 """
@@ -208,7 +210,13 @@ class BaggingClassifier:
 
         self.estimators_ = []
         for _ in range(self.n_estimators):
-            idx = rng.integers(0, n, size=m, endpoint=False)
+            if m == n:
+    # Deterministic: using all samples (no replacement) avoids flaky doctests
+                idx = np.arange(n)
+            else:
+    # Bootstrap sampling with replacement
+                idx = rng.integers(0, n, size=m, endpoint=False)
+
             est = _clone_estimator(self.base_estimator)
             est.fit(Xtr[idx], ytr[idx])
             self.estimators_.append(est)
